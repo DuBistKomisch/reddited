@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--
+      Changes by Jake Barnes <jakebarnes.com.au>
+      2012-01-28
+       - able to vote by clicking arrows
+       - [fix] display score text in colour of vote
+      2012-01-24
+       - [fix] moved title to end of data string to avoid needing to use a delimiter as the end
+       - [fix] submit link has ampersands escaped so that URLs containing query strings work
+      2012-01-13:
+       - removed unnecesary forward slashes from comments link
+      2011-11-09:
+       - redesigned HTML/CSS to use only classes and look a bit more authentic to reddit
+       - removed toggleBadge button since it no longer has a use
+       - changed submit link to a button
+       - blocks are generated using JS DOM since multiple are possible
+       - [fix] date displayed correctly
+       - [fix] domain link is now the same as what reddit would have
+       - added background for upvoted and downvotes links
+    -->
+    <title>reddited</title>
+    <style type="text/css">
+      body{
+        font-family: "verdana", "arial", "helvetica", sans-serif;
+        font-style: normal;
+        font-variant: normal;
+        font-size: 10px;
+      }
+      a {
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      p {
+        margin: 6px;
+      }
+      
+      .block {
+        clear: both;
+        padding: 12px 0px;
+      }
+      
+      .left {
+        float: left;
+        color: #c6c6c6;
+        height: 60px;
+        width: 40px;
+        background: transparent url("data:image/png;base64,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") 50% 0 no-repeat;
+      }
+      .up {
+        color: rgb(255, 139, 96);
+        background: transparent url("data:image/png;base64,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") 50% 0 no-repeat;
+      }
+      .down {
+        color: rgb(148, 148, 255);
+        background: transparent url("data:image/png;base64,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") 50% 0 no-repeat;
+      }
+      .score{
+        font-size: 14px;
+        font-weight: 700;
+        text-align: center;
+        display: block;
+        overflow: hidden;
+      }
+      .upvote {
+        position: relative;
+        left: 10px;
+        height: 20px;
+        width: 20px;
+        background-color: transparent;
+        cursor: pointer;
+      }
+      .downvote {
+        position: relative;
+        left: 10px;
+        height: 20px;
+        width: 20px;
+        background-color: transparent;
+        cursor: pointer;
+      }
+      
+      .right{
+        float: left;
+        width: 420px;
+      }
+      .first, .domain {
+        color: #888888;
+      }
+      .title {
+        color: #551a8b;
+        font-size: 12px;
+      }
+      .second {
+        color: #888888;
+        line-height: 8px;
+      }
+      .second a {
+        color: #336699;
+      }
+      .third {
+        line-height: 8px;
+      }
+      .third a {
+        color: #888888;
+        font-weight: 700;
+      }
+      #toggleBadge {
+        width: 100%;
+      }
+      #missing {
+        font-size: 14px;
+      }
+    </style>
+    <script type="text/javascript">
+      window.addEventListener("load", function()
+      {
+        var url = window.localStorage.getItem("currentTab");
+        var count = window.localStorage.getItem(url).split("|")[0];
+        
+        if (count == 0)
+        {
+          var missing = document.createElement('p');
+          missing.id = 'missing';
+          missing.appendChild(document.createTextNode('This URL hasn\'t been submitted to Reddit yet. '));
+          document.body.appendChild(missing);
+          var submit = document.createElement('a');
+          submit.id = 'submit';
+          submit.setAttribute('target', '_blank');
+          submit.setAttribute('href', 'http://www.reddit.com/submit?url=' + encodeURIComponent(url));
+          submit.appendChild(document.createTextNode('Submit now!'));
+          missing.appendChild(submit);
+        }
+        else for (var i = 0; i < count; i++)
+        {
+          //score|id|permalink|domain|created_utc|author|subreddit|num_comments|url|likes|...title
+          datastring = window.localStorage.getItem(i + "|" + url);
+          data = datastring.split("|");
+          title = -1;
+          for (var c = 0; c < 10; c++)
+            title = datastring.indexOf("|", title) + 1;
+
+          var upvote = createElement('div', 'upvote');
+          var score = createElement('span', 'score', data[0]);
+          var downvote = createElement('div', 'downvote');
+          var left = createElement('div', 'left');
+          left.setAttribute('id', 'left' + i);
+          if (data[9] == 'true')
+            left.setAttribute('class', 'left up');
+          else if (data[9] == 'false')
+            left.setAttribute('class', 'left down');
+          upvote.setAttribute('id', 'upvote' + i);
+          upvote.addEventListener('click', function()
+          {
+            var uh = window.localStorage.getItem("modhash");
+            if (uh == "")
+            {
+              alert("You must be logged in to Reddit to vote!");
+              return;
+            }
+            var i = this.getAttribute('id').substring(6);
+            var left = document.getElementById('left' + i);
+            var data = window.localStorage.getItem(i + "|" + url).split("|");
+            var direction = data[9] == 'true' ? 0 : 1;
+            var params = "id=" + data[1] + "&dir=" + direction + "&uh=" + window.localStorage.getItem("modhash");
+            var vote = new XMLHttpRequest();
+            vote.open("POST", "http://www.reddit.com/api/vote", true);
+            vote.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            vote.onreadystatechange = function ()
+            {
+              if (vote.readyState == 4 && vote.status == 200)
+              {
+                if (direction == 1)
+                  left.setAttribute('class', 'left up');
+                else
+                  left.setAttribute('class', 'left');
+                data[9] = direction == 1 ? "true" : "";
+                window.localStorage.setItem(i + "|"  + url, data.join("|"));
+              }
+            }
+            vote.send(params);
+          }, false);
+          downvote.setAttribute('id', 'downvote' + i);
+          downvote.addEventListener('click', function()
+          {
+            var uh = window.localStorage.getItem("modhash");
+            if (uh == "")
+            {
+              alert("You must be logged in to Reddit to vote!");
+              return;
+            }
+            var i = this.getAttribute('id').substring(8);
+            var left = document.getElementById('left' + i);
+            var data = window.localStorage.getItem(i + "|" + url).split("|");
+            var direction = data[9] == 'false' ? 0 : -1;
+            var params = "id=" + data[1] + "&dir=" + direction + "&uh=" + window.localStorage.getItem("modhash");
+            var vote = new XMLHttpRequest();
+            vote.open("POST", "http://www.reddit.com/api/vote", true);
+            vote.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            vote.onreadystatechange = function ()
+            {
+              if (vote.readyState == 4 && vote.status == 200)
+              {
+                if (direction == -1)
+                  left.setAttribute('class', 'left down');
+                else
+                  left.setAttribute('class', 'left');
+                data[9] = direction == -1 ? "false" : "";
+                window.localStorage.setItem(i + "|"  + url, data.join("|"));
+              }
+            }
+            vote.send(params);
+          }, false);
+          left.appendChild(upvote);
+          left.appendChild(score);
+          left.appendChild(downvote);
+          
+          var title = createElement('a', 'title', datastring.substring(title), "http://www.reddit.com" + data[2]);
+          var domain = createElement('a', 'domain', data[3], "http://www.reddit.com/domain/" + data[3] + "/");
+          var first = createElement('p', 'first');
+          first.appendChild(title);
+          first.appendChild(document.createTextNode(' ('));
+          first.appendChild(domain);
+          first.appendChild(document.createTextNode(')'));
+          
+          var time = createElement('span', 'time', (new Date(Number(data[4]))).toLocaleString());
+          var author = createElement('a', 'author', data[5], "http://www.reddit.com/user/" + data[5] + "/");
+          var subreddit = createElement('a', 'subreddit', data[6], "http://www.reddit.com/r/" + data[6] + "/");
+          var second = createElement('p', 'second');
+          second.appendChild(document.createTextNode('submitted '));
+          second.appendChild(time);
+          second.appendChild(document.createTextNode(' by '));
+          second.appendChild(author);
+          second.appendChild(document.createTextNode(' to '));
+          second.appendChild(subreddit);
+          
+          var comments = createElement('a', 'comments', data[7] + ((parseInt(data[7])==1)?" comment":" comments"), "http://www.reddit.com" + data[2]);
+          var third = createElement('p', 'third');
+          third.appendChild(comments);
+          
+          var right = createElement('div', 'right');
+          right.appendChild(first);
+          right.appendChild(second);
+          right.appendChild(third);
+          
+          var block = createElement('div', 'block');
+          block.appendChild(left);
+          block.appendChild(right);
+          
+          document.body.appendChild(block);
+        }
+      }, false);
+      
+      function createElement(e, c, t, h)
+      {
+        var n = document.createElement(e);
+        n.setAttribute('class', c);
+        if (t)
+          n.appendChild(document.createTextNode(t));
+        if (e == 'a')
+        {
+          n.setAttribute('target', '_blank');
+          n.setAttribute('href', h);
+        }
+        return n;
+      }
+    </script>
+  </head>
+</html>

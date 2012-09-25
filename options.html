@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--
+      Changes by Jake Barnes <jakebarnes.com.au>
+      2012-06-24:
+       - listSorting preference added
+       - cacheTime preference added
+      2012-01-21:
+       - options page added
+       - badgeContent preference added
+    -->
+    <title>reddited preferences</title>
+  </head>
+  <body>
+    <p>
+      <label for="badgeContent">what should be displayed on the badge?</label>
+      <select name="badgeContent" id="badgeContent" />
+        <option value="submissions">total submissions found</option>
+        <option value="score">best score</option>
+        <option value="comments">most comments</option>
+        <option value="scoreTotal">total score</option>
+        <option value="commentsTotal">total comments</option>
+        <option value="nothing">nothing</option>
+      </select>
+    </p>
+    <p>
+      <label for="listSorting">what should the list be sorted by?</label>
+      <select name="listSorting" id="listSorting" />
+        <option value="score">score</option>
+        <option value="comments">comments</option>
+        <option value="date">date</option>
+        <option value="nothing">nothing</option>
+      </select>
+    </p>
+    <p>
+      <label for="cacheTime">cache results for how many seconds?</label>
+      <input type="text" id="cacheTime" name="cacheTime" />
+    </p>
+    <script type="text/javascript">
+      // badgeContent
+      var badgeContent = document.getElementById("badgeContent");
+      badgeContent.value = widget.preferences.badgeContent;
+      badgeContent.addEventListener("change", function() {
+        widget.preferences.badgeContent = this.value;
+      }, false);
+      
+      // listSorting
+      var listSorting = document.getElementById("listSorting");
+      listSorting.value = widget.preferences.listSorting;
+      listSorting.addEventListener("change", function() {
+        widget.preferences.listSorting = this.value;
+      }, false);
+      
+      // cacheTime
+      var cacheTime = document.getElementById("cacheTime");
+      cacheTime.value = widget.preferences.cacheTime;
+      cacheTime.addEventListener("change", function() {
+        widget.preferences.cacheTime = Math.max(Number(this.value), 5);
+      }, false);
+    </script>
+  </body>
+</html>
