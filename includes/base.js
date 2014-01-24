@@ -1,1 +1,0 @@
-opera.extension.postMessage( "on" );

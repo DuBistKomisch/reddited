@@ -1,0 +1,23 @@
+{
+  "name": "reddited",
+  "id": "jid1-o6Fu4SiUcHDCsw",
+  "icon": "data/icon32.png",
+  "icon64": "data/icon64.png",
+  "version": "2.0",
+
+  "title": "Reddited",
+  "description": "Has this page been reddited?",
+  "author": "DuBistKomisch",
+  "license": "MPL 2.0",
+  "homepage": "http://jakebarnes.com.au/#reddited",
+
+  "preferences": [
+    {
+      "name": "timeout",
+      "title": "Timeout",
+      "description": "How long to wait (in minutes) before rechecking the result count.",
+      "type": "integer",
+      "value": 60
+    }
+  ]
+}
