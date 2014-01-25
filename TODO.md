@@ -1,0 +1,8 @@
+- listing problems
+  - add privacy statement
+  - add support info
+- review problems
+  - JS namespace polution
+  - preference naming convention
+  - performance
+    - clear cache on exit/startup
